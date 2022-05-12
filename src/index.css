@@ -1,21 +1,38 @@
 body {
   margin: 0;
-  /* font-family: 'Courier Prime', monospace; */
-  
-  
+  /* font-family: 'Courier Prime', monospace; */  
   /* font-family: 'Space Mono', monospace; */
 }
 
 h1, h2, h3, h4, h5, h6 { font-family: 'Source Sans Pro', sans-serif; }
 
-p {
+p, input, button {
   font-family: 'PT Mono', monospace;
 }
 
 span {
   font-family: 'IBM Plex Mono', monospace;
+  display: block;
 }
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+div {
+  padding: 20px;
+  margin: 10px;
+  box-sizing: border-box;
 }
+
+form {
+  padding: 10px 0;
+}
+
+input {
+  width: 45%;
+}
+
+form input, button {
+  font-size: 0.95rem;
+  padding: 10px 20px;
+  margin: 7px 10px 5px 0;
+  border: .5px solid #000;
+}
+

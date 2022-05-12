@@ -1,16 +1,16 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 
 const itemSlice = createSlice({
-    name: '',
+    name: 'counter',
     initialState: {
         value: 0,
     },
     reducers: {
         decrement: state => {
-            return state .value -= 1
+            state.value -= 1
         },
         increment: state => {
-            return state.value += 1
+            state.value += 1
         }
     }
 })
@@ -21,4 +21,6 @@ export const store = configureStore({
     reducer: itemSlice.reducer
 })
 
-// store.subscribe(() => console.log(store.getState()))
+export default itemSlice.reducer
+
+store.subscribe(() => console.log(store.getState()))
