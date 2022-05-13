@@ -3,16 +3,20 @@ import { createSlice } from '@reduxjs/toolkit'
 export const quantitySlice = createSlice({
     name: 'counter',
     initialState: {
-        value: 0,
+        item: '',
+        quantity: 0,
     },
     reducers: {
-        decrement: state => {
-            state.value -= 1
+        setItem: (state, action) => {
+            state.item = state.item + action.payload
         },
-        increment: state => {
-            state.value += 1
+        decrementInputQuantity: state => {
+            state.quantity--
+        },
+        incrementInputQuantity: state => {
+            state.quantity++
         }
     }
 })
 
-export const { decrement, increment } = quantitySlice.actions
+export const { setItem, decrementInputQuantity, incrementInputQuantity } = quantitySlice.actions
