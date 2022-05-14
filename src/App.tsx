@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import itemsSlice, { addItem, removeItem } from './features/items-slice'
+import { addItem, removeItem } from './features/items-slice'
 import { useAppDispatch, useAppSelector } from './features/hooks'
 import './App.css';
 
@@ -12,14 +12,21 @@ function App() {
   const [quantity, setQuantity] = useState(0)
 
   const handleChangeItem = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.currentTarget.value.length > 0 ? setItem(e.target.value) : ''
+    if (e.currentTarget.value.length <= 0) return
+    setItem(e.target.value)
+  }
+
+  const handleChangeQuantity = (count: number) => {
+    if (count === NaN) return
+    console.log(count)
+    setQuantity(count)
   }
 
   const handleAddToStore = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     // check for values
     if (item.length <= 0 || quantity <= 0) return
-
+    
     dispatch( addItem({
       item,
       quantity,
@@ -43,10 +50,10 @@ function App() {
       </header>
       <main>
         <div>
-          <p>keep track of your inventory with this app</p><br /><br />
+          <p>Keep track of your inventory with this app</p><br /><br />
 
           <form>
-            <span>what do you need to add?</span>
+            <span>What do you need to add?</span>
             <input 
             type={'text'} 
             onChange={(e) => handleChangeItem(e)} 
@@ -57,19 +64,19 @@ function App() {
 
             <span>Quantity</span>
             <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{
-              if (!typeof +e.target.value ) return
-              setQuantity(+e.target.value)
+              if ( !parseInt(e.target.value) ) return
+              handleChangeQuantity(+e.target.value)
               }} style={{width: '47%'}} />
             
             <button onClick={(e) => {
               e.preventDefault()
               if (quantity <= 0) return
-              setQuantity( quantity - 1 )
+              handleChangeQuantity( quantity - 1 )
               }} className='quantity-btn'><b>🔼 </b></button>
 
             <button onClick={(e) => {
               e.preventDefault()
-              setQuantity( quantity + 1 )
+              handleChangeQuantity( quantity + 1 )
               }} className='quantity-btn'><b>🔽 </b></button>
             <br/>
 
