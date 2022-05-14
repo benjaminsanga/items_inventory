@@ -1,20 +1,38 @@
-// import React from 'react';
 import React, { useState } from 'react';
-import { store } from './features/store';
-import { setItem, decrementInputQuantity, incrementInputQuantity } from './features/quantity-slice'
+import itemsSlice, { addItem, removeItem } from './features/items-slice'
+import { useAppDispatch, useAppSelector } from './features/hooks'
 import './App.css';
 
 function App() {
-  
-  // Can still subscribe to the store
-  store.subscribe(() => console.log(store.getState()))
+
+  const state = useAppSelector(state => state.itemSlice)
+  const dispatch = useAppDispatch()
+
+  const [item, setItem] = useState('')
+  const [quantity, setQuantity] = useState(0)
 
   const handleChangeItem = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.currentTarget.value.length > 0 ? store.dispatch ( setItem(e.target.value) ) : ''
+    e.currentTarget.value.length > 0 ? setItem(e.target.value) : ''
   }
 
-  const handleAddToStore = () => {
+  const handleAddToStore = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    // check for values
+    if (item.length <= 0 || quantity <= 0) return
 
+    dispatch( addItem({
+      item,
+      quantity
+    }) )
+
+    setItem('')
+    setQuantity(0)
+
+  }
+
+  const handleRemoveItem = (index: number) => {
+    if (!index) return
+    dispatch ( removeItem(index) )
   }
 
   return (
@@ -32,39 +50,47 @@ function App() {
             type={'text'} 
             onChange={(e) => handleChangeItem(e)} 
             placeholder='type name of item here' 
-            value={store.getState().quantitySlice.item} />
+            value={item} />
 
             <br /><br />
 
             <span>Quantity</span>
-            <input type={'text'} placeholder={'quantity'} value={store.getState().quantitySlice.quantity} onChange={()=>''} style={{width: '47%'}} />
+            <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{
+              if (!typeof +e.target.value ) return
+              setQuantity(+e.target.value)
+              }} style={{width: '47%'}} />
             
             <button onClick={(e) => {
               e.preventDefault()
-              if (store.getState().quantitySlice.quantity <= 0) return
-              store.dispatch( decrementInputQuantity() )
+              if (quantity <= 0) return
+              setQuantity( quantity - 1 )
               }} className='quantity-btn'><b style={{fontSize: '0.85rem'}}> 👎 </b> -</button>
 
             <button onClick={(e) => {
               e.preventDefault()
-              store.dispatch( incrementInputQuantity() )
+              setQuantity( quantity + 1 )
               }} className='quantity-btn'>+ <b style={{fontSize: '0.85rem'}}> 👍 </b></button>
             <br/>
 
-            <button onClick={() => handleAddToStore()}>Add to Store</button>
+            <button onClick={(e) => handleAddToStore(e)}>Add to Store</button>
 
           </form>
         </div>
 
         <div>
-          <section>
-            <h2>Items</h2>
-            <p>#1 - Item</p>
-            <span>Quantity: {0}</span>
-            <button onClick={() => ''} className='small-box'>😩  -1</button>
-            <button onClick={() => ''} className='small-box danger'>Remove ❎ </button>
-            <p>------------------------------------------</p>
-          </section>
+          <h2>Items: {state.items.length}</h2>
+          {
+            state.items.map( (item, index) => (
+              <section key={index}>
+                <p>#{index+1} - {item.item}</p>
+                <span>Quantity: {item.quantity}</span>
+                <button onClick={() => ''} className='small-box'>😩  -1</button>
+                <button onClick={() => handleRemoveItem(index)} className='small-box danger'>Remove ❎ </button>
+                <p>------------------------------------------</p>
+              </section>
+            ))
+          }
+          
         </div>
       </main>
     </div>
