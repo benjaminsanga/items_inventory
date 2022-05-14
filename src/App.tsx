@@ -22,7 +22,8 @@ function App() {
 
     dispatch( addItem({
       item,
-      quantity
+      quantity,
+      date: `${new Date().toLocaleDateString()} / ${new Date().toLocaleTimeString()}`
     }) )
 
     setItem('')
@@ -31,7 +32,7 @@ function App() {
   }
 
   const handleRemoveItem = (index: number) => {
-    if (!index) return
+    if (index < 0) return
     dispatch ( removeItem(index) )
   }
 
@@ -64,12 +65,12 @@ function App() {
               e.preventDefault()
               if (quantity <= 0) return
               setQuantity( quantity - 1 )
-              }} className='quantity-btn'><b style={{fontSize: '0.85rem'}}> 👎 </b> -</button>
+              }} className='quantity-btn'><b>🔼 </b></button>
 
             <button onClick={(e) => {
               e.preventDefault()
               setQuantity( quantity + 1 )
-              }} className='quantity-btn'>+ <b style={{fontSize: '0.85rem'}}> 👍 </b></button>
+              }} className='quantity-btn'><b>🔽 </b></button>
             <br/>
 
             <button onClick={(e) => handleAddToStore(e)}>Add to Store</button>
@@ -82,13 +83,16 @@ function App() {
           {
             state.items.map( (item, index) => (
               <section key={index}>
-                <p>#{index+1} - {item.item}</p>
+                <p className='item-and-date'>
+                  #{state.items.length-index} - {item.item} 
+                  <i>{item.date}</i>
+                </p>
                 <span>Quantity: {item.quantity}</span>
                 <button onClick={() => ''} className='small-box'>😩  -1</button>
                 <button onClick={() => handleRemoveItem(index)} className='small-box danger'>Remove ❎ </button>
-                <p>------------------------------------------</p>
+                <p>----------------------------</p>
               </section>
-            ))
+            )).reverse()
           }
           
         </div>
