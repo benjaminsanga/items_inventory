@@ -12,13 +12,12 @@ function App() {
   const [quantity, setQuantity] = useState(0)
 
   const handleChangeItem = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value.length <= 0) return
+    if (e.currentTarget.value.length < 0) return
     setItem(e.target.value)
   }
 
   const handleChangeQuantity = (count: number) => {
-    if (count === NaN) return
-    console.log(count)
+    if (!(typeof count === 'number' && count > -1)) return
     setQuantity(count)
   }
 
@@ -63,21 +62,18 @@ function App() {
             <br /><br />
 
             <span>Quantity</span>
-            <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{
-              if ( !parseInt(e.target.value) ) return
-              handleChangeQuantity(+e.target.value)
-              }} style={{width: '47%'}} />
+            <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{ handleChangeQuantity(+e.target.value) }} style={{width: '47%'}} />
             
             <button onClick={(e) => {
               e.preventDefault()
-              if (quantity <= 0) return
+              if (quantity < 0) return
               handleChangeQuantity( quantity - 1 )
-              }} className='quantity-btn'><b>🔼 </b></button>
+              }} className='quantity-btn'><b>🔽 </b></button>
 
             <button onClick={(e) => {
               e.preventDefault()
               handleChangeQuantity( quantity + 1 )
-              }} className='quantity-btn'><b>🔽 </b></button>
+              }} className='quantity-btn'><b>🔼 </b></button>
             <br/>
 
             <button onClick={(e) => handleAddToStore(e)}>Add to Store</button>
@@ -95,7 +91,7 @@ function App() {
                   <i>{item.date}</i>
                 </p>
                 <span>Quantity: {item.quantity}</span>
-                <button onClick={() => ''} className='small-box'>😩  -1</button>
+                {/* <button onClick={() => ''} className='small-box'>😩  -1</button> */}
                 <button onClick={() => handleRemoveItem(index)} className='small-box danger'>Remove ❎ </button>
                 <p>----------------------------</p>
               </section>
