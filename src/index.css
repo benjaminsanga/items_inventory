@@ -1,5 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%;
   /* font-family: 'Courier Prime', monospace; */  
   /* font-family: 'Space Mono', monospace; */
 }
@@ -29,6 +38,8 @@ input {
   width: 80%;
 }
 
+.quantity {width: '47%'}
+
 form input, button {
   font-size: 0.95rem;
   padding: 10px 20px;
@@ -45,6 +56,9 @@ b {
     padding: 20px;
     margin: 5px;
     box-sizing: border-box;
+  }
+  input {
+    width: 100%;
   }
 }
 

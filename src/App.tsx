@@ -49,7 +49,7 @@ function App() {
       </header>
       <main>
         <div>
-          <p>Keep track of your inventory with this app</p><br /><br />
+          <p>Keep track of your inventory with this app, all items are on the right.</p><br /><br />
 
           <form>
             <span>What do you need to add?</span>
@@ -62,7 +62,7 @@ function App() {
             <br /><br />
 
             <span>Quantity</span>
-            <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{ handleChangeQuantity(+e.target.value) }} style={{width: '47%'}} />
+            <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{ handleChangeQuantity(+e.target.value) }} className='quantity' />
             
             <button onClick={(e) => {
               e.preventDefault()
