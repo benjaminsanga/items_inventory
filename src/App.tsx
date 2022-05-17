@@ -29,7 +29,7 @@ function App() {
     dispatch( addItem({
       item,
       quantity,
-      date: `${new Date().toLocaleDateString()} / ${new Date().toLocaleTimeString()}`
+      date: `${new Date().toLocaleString()}`
     }) )
 
     setItem('')
