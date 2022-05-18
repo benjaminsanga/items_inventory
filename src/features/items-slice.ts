@@ -13,9 +13,11 @@ export const itemSlice = createSlice({
     initialState: initialValue,
     reducers: {
         addItem(state, action: PayloadAction<{item: string, quantity: number, date: string}>) {
+            localStorage.setItem(action.payload.date, JSON.stringify(action.payload))
             state.items = [...state.items, action.payload]
         },
         removeItem(state, action: PayloadAction<number>) {
+            localStorage.removeItem(state.items[action.payload].date)
             state.items = [...state.items.filter((_, i) => i !== action.payload)]
         }
     }

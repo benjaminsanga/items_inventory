@@ -85,7 +85,7 @@ function App() {
         </div>
 
         <div>
-          <h2>Items: {state.items.length}</h2>
+          <h2>Items: {localStorage.length}</h2>
           {
             state.items.map( (item, index) => (
               <section key={index}>
