@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { addItem, removeItem } from './features/items-slice'
 import { useAppDispatch, useAppSelector } from './features/hooks'
 import './App.css';
 
 function App() {
 
-  const state = useAppSelector(state => state.itemSlice)
-  const dispatch = useAppDispatch()
-
   const [item, setItem] = useState('')
   const [quantity, setQuantity] = useState(0)
+
+  const itemInput = useRef(null)
+
+  const state = useAppSelector(state => state.itemSlice)
+  const dispatch = useAppDispatch()
 
   const handleChangeItem = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value.length < 0) return
@@ -49,15 +51,16 @@ function App() {
       </header>
       <main>
         <div>
-          <p>Keep track of your inventory with this app, all items are on the right.</p><br /><br />
+          <p>Keep track of your inventory with this app, all items are on the right, when added.</p><br /><br />
 
           <form>
             <span>What do you need to add?</span>
             <input 
             type={'text'} 
             onChange={(e) => handleChangeItem(e)} 
-            placeholder='type name of item here' 
-            value={item} />
+            placeholder='Type name of item here...' 
+            value={item} 
+            ref={itemInput.current} />
 
             <br /><br />
 
