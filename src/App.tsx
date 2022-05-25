@@ -1,17 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { addItem, removeItem } from './features/items-slice'
 import { useAppDispatch, useAppSelector } from './features/hooks'
 import './App.css';
+import EntryForm from './components/EntryForm';
+import ItemsList from './components/ItemsList';
 
 function App() {
 
   const [item, setItem] = useState('')
   const [quantity, setQuantity] = useState(0)
-
-  const itemInput = useRef(null)
-
-  const state = useAppSelector(state => state.itemSlice)
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    for (let storageItem in localStorage) { 
+      if (new Date(storageItem).toString().match(/[0-9]/g) === null) continue
+
+      let item: { item: string, quantity: number, date: string } = JSON.parse(localStorage.getItem(storageItem) as string)
+      
+      dispatch(addItem({
+        item: item.item,
+        quantity: item.quantity,
+        date: item.date
+      }))
+      
+    }
+  
+  }, [])
 
   const handleChangeItem = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value.length < 0) return
@@ -50,58 +64,14 @@ function App() {
         <h1>Inventory 🥕 </h1>
       </header>
       <main>
-        <div>
-          <p>Keep track of your inventory with this app, all items are on the right, when added.</p><br /><br />
+        <EntryForm item={item} 
+        quantity={quantity} 
+        handleChangeItem={handleChangeItem} 
+        handleChangeQuantity={handleChangeQuantity} 
+        handleAddToStore={handleAddToStore} />
 
-          <form>
-            <span>What do you need to add?</span>
-            <input 
-            type={'text'} 
-            onChange={(e) => handleChangeItem(e)} 
-            placeholder='Type name of item here...' 
-            value={item} 
-            ref={itemInput.current} />
-
-            <br /><br />
-
-            <span>Quantity</span>
-            <input type={'text'} placeholder={'quantity'} value={quantity} onChange={e=>{ handleChangeQuantity(+e.target.value) }} className='quantity' />
-            
-            <button onClick={(e) => {
-              e.preventDefault()
-              if (quantity < 0) return
-              handleChangeQuantity( quantity - 1 )
-              }} className='quantity-btn'><b>🔽 </b></button>
-
-            <button onClick={(e) => {
-              e.preventDefault()
-              handleChangeQuantity( quantity + 1 )
-              }} className='quantity-btn'><b>🔼 </b></button>
-            <br/>
-
-            <button onClick={(e) => handleAddToStore(e)}>Add to Store</button>
-
-          </form>
-        </div>
-
-        <div>
-          <h2>Items: {localStorage.length}</h2>
-          {
-            state.items.map( (item, index) => (
-              <section key={index}>
-                <p className='item-and-date'>
-                  #{state.items.length-index} - {item.item} 
-                  <i>{item.date}</i>
-                </p>
-                <span>Quantity: {item.quantity}</span>
-                {/* <button onClick={() => ''} className='small-box'>😩  -1</button> */}
-                <button onClick={() => handleRemoveItem(index)} className='small-box danger'>Remove ❎ </button>
-                <p>----------------------------</p>
-              </section>
-            )).reverse()
-          }
-          
-        </div>
+        <ItemsList 
+        handleRemoveItem={handleRemoveItem} />
       </main>
     </div>
   );
