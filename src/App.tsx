@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { addItem, removeItem } from './features/items-slice'
-import { useAppDispatch, useAppSelector } from './features/hooks'
+import { useAppDispatch } from './features/hooks'
 import './App.css';
 import EntryForm from './components/EntryForm';
 import ItemsList from './components/ItemsList';
@@ -73,6 +73,9 @@ function App() {
         <ItemsList 
         handleRemoveItem={handleRemoveItem} />
       </main>
+      <footer>
+        <p>Created by <a href='https://twitter.com/yourfavben' target={'_blank'}>@yourfavben 😎  </a></p>
+      </footer>
     </div>
   );
 }
