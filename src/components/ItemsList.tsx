@@ -16,8 +16,8 @@ const ItemsList = ({handleRemoveItem}: ItemsListType) => {
             {
             state.items.map( (item, index) => (
                 <section key={index}>
-                <p className='item-and-date'>
-                    #{state.items.length - index} - {item.item} 
+                <p className='item-and-date' style={{padding: '10px 0'}}>
+                    <strong style={{fontSize: '18px'}}>#{state.items.length - index} - {item.item}</strong> 
                     <i>{item.date}</i>
                 </p>
                 <span>Quantity: {item.quantity}</span>
